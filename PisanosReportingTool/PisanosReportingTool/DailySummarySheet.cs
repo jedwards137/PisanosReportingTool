@@ -1,4 +1,5 @@
-﻿using ExcelDataReader;
+﻿using System;
+using ExcelDataReader;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -8,15 +9,17 @@ namespace PisanosReportingTool
 {
   public class DailySummarySheet
   {
-    private readonly Dictionary<string, double> _parsedSheetData = new Dictionary<string, double>();
+    public Dictionary<string, double> ParsedSheetData { get; private set; }
     private readonly DataTable _rawSheetData;
     private readonly Dictionary<string, int> _categoryRowIndexes;
 
     public DailySummarySheet(string fileName)
     {
+      ParsedSheetData = new Dictionary<string, double>();
       _rawSheetData = IngestRawDataFromExcelSheet(fileName);
       _categoryRowIndexes = FindCategoryRowIndexes();
 
+      SetInitialValues();
       GatherSummaryByPeriodValues();
       GatherOnlineSalesValues();
       GatherCovers();
@@ -24,6 +27,43 @@ namespace PisanosReportingTool
       GatherVoids();
       GatherComps();
       GatherDiscounts();
+    }
+
+    private void SetInitialValues()
+    {
+      ParsedSheetData["CateringSales"] = 0;
+      ParsedSheetData["OverShort"] = 0;
+      ParsedSheetData["GiftCardsRedeemed"] = 0;
+      ParsedSheetData["Owner"] = 0;
+      ParsedSheetData["BdayAnniversary"] = 0;
+      ParsedSheetData["Military"] = 0;
+      ParsedSheetData["CityOfKennesaw"] = 0;
+      ParsedSheetData["OtherRestaurant"] = 0;
+
+      ParsedSheetData["FoodBevLunch"] = 0;
+      ParsedSheetData["FoodBevDinner"] = 0;
+      ParsedSheetData["AlcoholLunch"] = 0;
+      ParsedSheetData["AlcoholDinner"] = 0;
+      ParsedSheetData["OnlineSales"] = 0;
+      ParsedSheetData["LunchCovers"] = 0;
+      ParsedSheetData["DinnerCovers"] = 0;
+      ParsedSheetData["CashDeposit"] = 0;
+      ParsedSheetData["PaidOut"] = 0;
+      ParsedSheetData["86"] = 0;
+      ParsedSheetData["CanceledOrder"] = 0;
+      ParsedSheetData["Training"] = 0;
+      ParsedSheetData["ChangedMind"] = 0; 
+      ParsedSheetData["ServerError"] = 0;
+      ParsedSheetData["ManagerMeal"] = 0;
+      ParsedSheetData["DrawerMeal"] = 0;
+      ParsedSheetData["Donation"] = 0;
+      ParsedSheetData["EmployeeOnShift"] = 0;
+      ParsedSheetData["EmployeeOffShift"] = 0;
+      ParsedSheetData["InHousePromo"] = 0;
+      ParsedSheetData["CobbTeacher"] = 0;
+      ParsedSheetData["ManagerOwner"] = 0;
+      ParsedSheetData["GoodCustomer"] = 0;
+      ParsedSheetData["FirePolice"] = 0;
     }
 
     private void GatherDiscounts()
@@ -40,15 +80,15 @@ namespace PisanosReportingTool
         {
           case "cobb county teacher":
             var cobbCountyTeacher = (double)currentRow[5];
-            _parsedSheetData.Add("CobbCounty", cobbCountyTeacher);
+            ParsedSheetData["CobbTeacher"] = cobbCountyTeacher;
             break;
           case "employee":
             var employeeOnShift = (double)currentRow[5];
-            _parsedSheetData.Add("EmployeeOnShift", employeeOnShift);
+            ParsedSheetData["EmployeeOnShift"] = employeeOnShift;
             break;
           case "employee off shift":
             var employeeOffShift = (double)currentRow[5];
-            _parsedSheetData.Add("EmployeeOffShift", employeeOffShift);
+            ParsedSheetData["EmployeeOffShift"] = employeeOffShift;
             break;
           case "fire dept":
             var fireDept = (double)currentRow[5];
@@ -56,11 +96,11 @@ namespace PisanosReportingTool
             break;
           case "good customer":
             var goodCustomer = (double)currentRow[5];
-            _parsedSheetData.Add("GoodCustomer", goodCustomer);
+            ParsedSheetData["GoodCustomer"] = goodCustomer;
             break;
           case "in-house promo":
             var inHousePromo = (double)currentRow[5];
-            _parsedSheetData.Add("InHousePromo", inHousePromo);
+            ParsedSheetData["InHousePromo"] = inHousePromo;
             break;
           case "manager":
             var manager = (double)currentRow[5];
@@ -90,15 +130,15 @@ namespace PisanosReportingTool
         {
           case "manager meal":
             var managerMeal = (double)currentRow[5];
-            _parsedSheetData.Add("ManagerMeal", managerMeal);
+            ParsedSheetData["ManagerMeal"] = managerMeal;
             break;
           case "drawer meal":
             var drawerMeal = (double)currentRow[5];
-            _parsedSheetData.Add("DrawerMeal", drawerMeal);
+            ParsedSheetData["DrawerMeal"] = drawerMeal;
             break;
           case "donation":
             var donation = (double)currentRow[5];
-            _parsedSheetData.Add("Donation", donation);
+            ParsedSheetData["Donation"] = donation;
             break;
           case null:
             break;
@@ -120,23 +160,23 @@ namespace PisanosReportingTool
         {
           case "changed mind":
             var changedMind = (double)currentRow[5];
-            _parsedSheetData.Add("ChangedMind", changedMind);
+            ParsedSheetData["ChangedMind"] = changedMind;
             break;
           case "86":
             var eightysix = (double)currentRow[5];
-            _parsedSheetData.Add("86", eightysix);
+            ParsedSheetData["86"] = eightysix;
             break;
           case "canceled order":
             var canceledOrder = (double)currentRow[5];
-            _parsedSheetData.Add("CanceledOrder", canceledOrder);
+            ParsedSheetData["CanceledOrder"] = canceledOrder;
             break;
           case "server error":
             var serverError = (double)currentRow[5];
-            _parsedSheetData.Add("ServerError", serverError);
+            ParsedSheetData["ServerError"] = serverError;
             break;
           case "training":
             var training = (double)currentRow[5];
-            _parsedSheetData.Add("Training", training);
+            ParsedSheetData["Training"] = training;
             break;
           case null:
             break;
@@ -152,20 +192,17 @@ namespace PisanosReportingTool
       for (var i = startingIndex; i < endingIndex; i++)
       {
         var currentRow = _rawSheetData.Rows[i].ItemArray;
-        var rowTitle = currentRow[0].ToString()?.ToLower();
+        var rowTitle = currentRow[0].ToString()?.Trim().ToLower();
 
         switch (rowTitle)
         {
           case "net cash received":
-            var cashReceived = (double)currentRow[4];
-            _parsedSheetData.Add("CashReceived", cashReceived);
-
-            var cashDeposit = (double)currentRow[7];
-            _parsedSheetData.Add("CashDeposit", cashDeposit);
+            var cashDeposit = Convert.ToDouble(currentRow[7]);
+            ParsedSheetData["CashDeposit"] = cashDeposit;
             break;
           case "paid out":
-            var paidOut = (double)currentRow[4];
-            _parsedSheetData.Add("PaidOut", paidOut);
+            var paidOut = Convert.ToDouble(currentRow[4]);
+            ParsedSheetData["PaidOut"] = paidOut;
             break;
           case null:
             break;
@@ -187,10 +224,10 @@ namespace PisanosReportingTool
         if (!coversRowFound) continue;
 
         var lunchCovers = (double)currentRow[1];
-        _parsedSheetData.Add("LunchCovers", lunchCovers);
+        ParsedSheetData["LunchCovers"] = lunchCovers;
 
         var dinnerCovers = (double)currentRow[2];
-        _parsedSheetData.Add("DinnerCovers", dinnerCovers);
+        ParsedSheetData["DinnerCovers"] = dinnerCovers;
       }
     }
 
@@ -246,10 +283,10 @@ namespace PisanosReportingTool
         {
           case "alcohol":
             var alcoholLunch = (double)currentRow[1];
-            _parsedSheetData.Add("AlcoholLunch", alcoholLunch);
+            ParsedSheetData["AlcoholLunch"] = alcoholLunch;
 
             var alcoholDinner = (double)currentRow[2];
-            _parsedSheetData.Add("AlcoholDinner", alcoholDinner);
+            ParsedSheetData["AlcoholDinner"] = alcoholDinner;
             break;
           case "beverage":
             var beverageLunch = (double)currentRow[1];
@@ -340,13 +377,13 @@ namespace PisanosReportingTool
     private void AddToExistingValue(string key, double value)
     {
       var newValue = value;
-      var keyExists = _parsedSheetData.ContainsKey(key);
+      var keyExists = ParsedSheetData.ContainsKey(key);
       if (keyExists)
       {
-        var existingValue = _parsedSheetData[key];
+        var existingValue = ParsedSheetData[key];
         newValue = existingValue + value;
       }
-      _parsedSheetData[key] = newValue;
+      ParsedSheetData[key] = newValue;
     }
   }
 }

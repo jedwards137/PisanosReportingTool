@@ -5,9 +5,140 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PisanosReportingTool"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="LoadSheetButton" Content="Load Sheet" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,206,0,0" Click="Button_Click"/>
+        Title="MainWindow" Height="600" Width="800">
+  <Grid Margin="10">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <!-- Sales Comparison Group -->
+    <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Sales Comparison" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Net Food/Bev Sales (Lunch):"/>
+        <TextBox x:Name="FoodBevLunchTb" Width="100"/>
+        <Label Content="Net Alcohol Sales (Lunch):" HorizontalAlignment="Left"/>
+        <TextBox x:Name="AlcoholLunchTb" Width="100"/>
+        <Label Content="Net Catering Sales:" HorizontalAlignment="Left"/>
+        <TextBox x:Name="CateringSales" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Net Food/Bev Sales (Dinner):" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="FoodBevDinnerTb" Width="100"/>
+        <Label Content="Net Alcohol Sales (Dinner):" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="AlcoholDinnerTb" Width="100"/>
+        <Label Content="Net Online Sales:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="OnlineSalesTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
 
-    </Grid>
+    <!-- Covers Group -->
+    <StackPanel Grid.Column="0" Grid.Row="1"  VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Covers" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Lunch:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="LunchCoversTb" Width="100"/>
+        <Label Content="Dinner:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="DinnerCoversTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
+
+    <!-- Cash Group -->
+    <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Cash" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Cash Deposit:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="CashDepositTb" Width="100"/>
+        <Label Content="Over/Short:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="OverShortTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Paid Outs:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="PaidOutTb" Width="100"/>
+        <Label Content="Gift Cards Redeemed:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="GiftCardsRedeemedTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
+
+    <!-- Food Voids Group -->
+    <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Food Voids" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="86:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="EightySixTb" Width="100"/>
+        <Label Content="Canceled Order:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="CanceledOrderTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Training:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="TrainingTb" Width="100"/>
+        <Label Content="Changed Mind:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="ChangedMindTb" Width="100"/>
+        <Label Content="Server Error:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="ServerErrorTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
+
+    <!-- Food Comps Group -->
+    <StackPanel Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Food Comps" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Manager Meal:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="ManagerMealTb" Width="100"/>
+        <Label Content="Owner:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="OwnerTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Drawer Meal:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="DrawerMealTb" Width="100"/>
+        <Label Content="Donation:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="DonationTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
+
+    <!-- Discounts Group -->
+    <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <Label Content="Discounts" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Employee Shift:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="EmployeeOnShiftTb" Width="100"/>
+        <Label Content="Employee Off Shift:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="EmployeeOffShiftTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="B-Day/Anniv.:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="BdayAnniversaryTb" Width="100"/>
+        <Label Content="Promotion Ad.:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="PromotionAdTb" Width="100"/>
+        <Label Content="Military:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="MilitaryTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Fire/Police:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="FirePoliceTb" Width="100"/>
+        <Label Content="Good Customer:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="GoodCustomerTb" Width="100"/>
+        <Label Content="City of Kennesaw:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="CityOfKennesawTb" Width="100"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Cobb Teacher:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="CobbTeacherTb" Width="100"/>
+        <Label Content="FB, Flip, WCD:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="OtherRestaurantTb" Width="100"/>
+        <Label Content="Owner/Manager:" HorizontalAlignment="Left"></Label>
+        <TextBox x:Name="ManagerOwnerTb" Width="100"/>
+      </StackPanel>
+    </StackPanel>
+    <Button Content="Button" Margin="717,29,0,0" Grid.Row="7" VerticalAlignment="Top" Click="Button_Click_1"/>
+  </Grid>
 </Window>

@@ -1,10 +1,11 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
+using ExcelApi;
+using ExcelApi.Models;
 using Window = System.Windows.Window;
 
-namespace PisanosReportingTool
+namespace PisanosReportingTool.ui
 {
   public partial class MainWindow : Window
   {
@@ -13,59 +14,57 @@ namespace PisanosReportingTool
       InitializeComponent();
     }
 
-    private void Button_Click_1(object sender, RoutedEventArgs e)
+    private void LoadDailySummaryClick(object sender, RoutedEventArgs e)
     {
-      var dailySummaryFilename = GetDailySummaryFilenameFromUser();
-      var hasFileName = dailySummaryFilename != string.Empty;
-      if (!hasFileName) return;
+      var newDailySummaryLoader = new NewDailySummaryLoader();
+      newDailySummaryLoader.GetFileNameFromUser();
 
-      var loadedDailySummarySheet = new DailySummarySheet(dailySummaryFilename);
-      SetUiValuesForLoadedDailySummarySheet(loadedDailySummarySheet);
-      Console.WriteLine("");
+      var fileNameReceivedFromUser = newDailySummaryLoader.FileName.Length > 0;
+      if (!fileNameReceivedFromUser) return;
+
+      var dailySummary = newDailySummaryLoader.ImportDailySummary();
+      SetUiValuesForLoadedDailySummary(dailySummary);
     }
 
-    private void SetUiValuesForLoadedDailySummarySheet(DailySummarySheet loadedDailySummarySheet)
+    private void SetUiValuesForLoadedDailySummary(DailySummary dailySummary)
     {
-      FoodBevLunchTb.Text = loadedDailySummarySheet.ParsedSheetData["FoodBevLunch"].ToString(CultureInfo.InvariantCulture);
-      FoodBevDinnerTb.Text = loadedDailySummarySheet.ParsedSheetData["FoodBevDinner"].ToString(CultureInfo.InvariantCulture);
-      AlcoholLunchTb.Text = loadedDailySummarySheet.ParsedSheetData["AlcoholLunch"].ToString(CultureInfo.InvariantCulture);
-      AlcoholDinnerTb.Text = loadedDailySummarySheet.ParsedSheetData["AlcoholDinner"].ToString(CultureInfo.InvariantCulture);
-      OnlineSalesTb.Text = loadedDailySummarySheet.ParsedSheetData["OnlineSales"].ToString(CultureInfo.InvariantCulture);
-      CateringSales.Text = loadedDailySummarySheet.ParsedSheetData["CateringSales"].ToString(CultureInfo.InvariantCulture);
-      LunchCoversTb.Text = loadedDailySummarySheet.ParsedSheetData["LunchCovers"].ToString(CultureInfo.InvariantCulture);
-      DinnerCoversTb.Text = loadedDailySummarySheet.ParsedSheetData["DinnerCovers"].ToString(CultureInfo.InvariantCulture);
-      CashDepositTb.Text = loadedDailySummarySheet.ParsedSheetData["CashDeposit"].ToString(CultureInfo.InvariantCulture);
-      OverShortTb.Text = loadedDailySummarySheet.ParsedSheetData["OverShort"].ToString(CultureInfo.InvariantCulture);
-      PaidOutTb.Text = loadedDailySummarySheet.ParsedSheetData["PaidOut"].ToString(CultureInfo.InvariantCulture);
-      GiftCardsRedeemedTb.Text = loadedDailySummarySheet.ParsedSheetData["GiftCardsRedeemed"].ToString(CultureInfo.InvariantCulture);
-      EightySixTb.Text = loadedDailySummarySheet.ParsedSheetData["86"].ToString(CultureInfo.InvariantCulture);
-      CanceledOrderTb.Text = loadedDailySummarySheet.ParsedSheetData["CanceledOrder"].ToString(CultureInfo.InvariantCulture);
-      TrainingTb.Text = loadedDailySummarySheet.ParsedSheetData["Training"].ToString(CultureInfo.InvariantCulture);
-      ChangedMindTb.Text = loadedDailySummarySheet.ParsedSheetData["ChangedMind"].ToString(CultureInfo.InvariantCulture);
-      ServerErrorTb.Text = loadedDailySummarySheet.ParsedSheetData["ServerError"].ToString(CultureInfo.InvariantCulture);
-      ManagerMealTb.Text = loadedDailySummarySheet.ParsedSheetData["ManagerMeal"].ToString(CultureInfo.InvariantCulture);
-      OwnerTb.Text = loadedDailySummarySheet.ParsedSheetData["Owner"].ToString(CultureInfo.InvariantCulture);
-      DrawerMealTb.Text = loadedDailySummarySheet.ParsedSheetData["DrawerMeal"].ToString(CultureInfo.InvariantCulture);
-      DonationTb.Text = loadedDailySummarySheet.ParsedSheetData["Donation"].ToString(CultureInfo.InvariantCulture);
-      EmployeeOnShiftTb.Text = loadedDailySummarySheet.ParsedSheetData["EmployeeOnShift"].ToString(CultureInfo.InvariantCulture);
-      EmployeeOffShiftTb.Text = loadedDailySummarySheet.ParsedSheetData["EmployeeOffShift"].ToString(CultureInfo.InvariantCulture);
-      BdayAnniversaryTb.Text = loadedDailySummarySheet.ParsedSheetData["BdayAnniversary"].ToString(CultureInfo.InvariantCulture);
-      PromotionAdTb.Text = loadedDailySummarySheet.ParsedSheetData["InHousePromo"].ToString(CultureInfo.InvariantCulture);
-      MilitaryTb.Text = loadedDailySummarySheet.ParsedSheetData["Military"].ToString(CultureInfo.InvariantCulture);
-      FirePoliceTb.Text = loadedDailySummarySheet.ParsedSheetData["FirePolice"].ToString(CultureInfo.InvariantCulture);
-      GoodCustomerTb.Text = loadedDailySummarySheet.ParsedSheetData["GoodCustomer"].ToString(CultureInfo.InvariantCulture);
-      CityOfKennesawTb.Text = loadedDailySummarySheet.ParsedSheetData["CityOfKennesaw"].ToString(CultureInfo.InvariantCulture);
-      CobbTeacherTb.Text = loadedDailySummarySheet.ParsedSheetData["CobbTeacher"].ToString(CultureInfo.InvariantCulture);
-      OtherRestaurantTb.Text = loadedDailySummarySheet.ParsedSheetData["OtherRestaurant"].ToString(CultureInfo.InvariantCulture);
-      ManagerOwnerTb.Text = loadedDailySummarySheet.ParsedSheetData["ManagerOwner"].ToString(CultureInfo.InvariantCulture);
+      FoodBevLunchTb.Text = dailySummary.SalesComparison.NetFoodBeverageSalesLunch.ToString(CultureInfo.InvariantCulture);
+      FoodBevDinnerTb.Text = dailySummary.SalesComparison.NetFoodBeverageSalesDinner.ToString(CultureInfo.InvariantCulture);
+      AlcoholLunchTb.Text = dailySummary.SalesComparison.NetAlcoholSalesLunch.ToString(CultureInfo.InvariantCulture);
+      AlcoholDinnerTb.Text = dailySummary.SalesComparison.NetAlcoholSalesDinner.ToString(CultureInfo.InvariantCulture);
+      OnlineSalesTb.Text = dailySummary.SalesComparison.NetOnlineSales.ToString(CultureInfo.InvariantCulture);
+      CateringSales.Text = dailySummary.SalesComparison.NetCateringSales.ToString(CultureInfo.InvariantCulture);
+      LunchCoversTb.Text = dailySummary.Covers.LunchCovers.ToString(CultureInfo.InvariantCulture);
+      DinnerCoversTb.Text = dailySummary.Covers.DinnerCovers.ToString(CultureInfo.InvariantCulture);
+      CashDepositTb.Text = dailySummary.Cash.CashDeposits.ToString(CultureInfo.InvariantCulture);
+      OverShortTb.Text = dailySummary.Cash.OverShort.ToString(CultureInfo.InvariantCulture);
+      PaidOutTb.Text = dailySummary.Cash.PaidOuts.ToString(CultureInfo.InvariantCulture);
+      GiftCardsRedeemedTb.Text = dailySummary.Cash.GiftCardsRedeemed.ToString(CultureInfo.InvariantCulture);
+      EightySixTb.Text = dailySummary.FoodVoids.EightySix.ToString(CultureInfo.InvariantCulture);
+      CanceledOrderTb.Text = dailySummary.FoodVoids.CanceledOrder.ToString(CultureInfo.InvariantCulture);
+      TrainingTb.Text = dailySummary.FoodVoids.Training.ToString(CultureInfo.InvariantCulture);
+      ChangedMindTb.Text = dailySummary.FoodVoids.ChangedMind.ToString(CultureInfo.InvariantCulture);
+      ServerErrorTb.Text = dailySummary.FoodVoids.ServerError.ToString(CultureInfo.InvariantCulture);
+      ManagerMealTb.Text = dailySummary.FoodComps.ManagerMeal.ToString(CultureInfo.InvariantCulture);
+      OwnerTb.Text = dailySummary.FoodComps.Owner.ToString(CultureInfo.InvariantCulture);
+      DrawerMealTb.Text = dailySummary.FoodComps.DrawerMeal.ToString(CultureInfo.InvariantCulture);
+      DonationTb.Text = dailySummary.FoodComps.Donation.ToString(CultureInfo.InvariantCulture);
+      EmployeeOnShiftTb.Text = dailySummary.FoodDiscounts.EmployeeOnShift.ToString(CultureInfo.InvariantCulture);
+      EmployeeOffShiftTb.Text = dailySummary.FoodDiscounts.EmployeeOffShift.ToString(CultureInfo.InvariantCulture);
+      BdayAnniversaryTb.Text = dailySummary.FoodDiscounts.BirthdayAnniversary.ToString(CultureInfo.InvariantCulture);
+      PromotionAdTb.Text = dailySummary.FoodDiscounts.PromotionAd.ToString(CultureInfo.InvariantCulture);
+      MilitaryTb.Text = dailySummary.FoodDiscounts.Military.ToString(CultureInfo.InvariantCulture);
+      FirePoliceTb.Text = dailySummary.FoodDiscounts.FirePolice.ToString(CultureInfo.InvariantCulture);
+      GoodCustomerTb.Text = dailySummary.FoodDiscounts.GoodCustomer.ToString(CultureInfo.InvariantCulture);
+      CityOfKennesawTb.Text = dailySummary.FoodDiscounts.CityOfKennesaw.ToString(CultureInfo.InvariantCulture);
+      CobbTeacherTb.Text = dailySummary.FoodDiscounts.CobbTeachers.ToString(CultureInfo.InvariantCulture);
+      OtherRestaurantTb.Text = dailySummary.FoodDiscounts.OtherRestaurant.ToString(CultureInfo.InvariantCulture);
+      ManagerOwnerTb.Text = dailySummary.FoodDiscounts.OwnerManager.ToString(CultureInfo.InvariantCulture);
     }
 
-    private static string GetDailySummaryFilenameFromUser()
+    private void SaveDailySummaryButtonClick(object sender, RoutedEventArgs e)
     {
-      var openFileDialog = new OpenFileDialog { Filter = "Excel Office | *.xlsx;*.xls" };
-      openFileDialog.ShowDialog();
-      var fileName = openFileDialog.FileName;
-      return fileName;
+
     }
   }
 }

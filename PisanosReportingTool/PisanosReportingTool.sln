@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PisanosReportingTool", "PisanosReportingTool\PisanosReportingTool.csproj", "{286D2184-5E89-4397-960A-CA11EC322EFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PisanosReportingTool.ui", "PisanosReportingTool\PisanosReportingTool.ui.csproj", "{286D2184-5E89-4397-960A-CA11EC322EFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelApi", "ExcelApi\ExcelApi.csproj", "{5CE31BC3-1F43-48D7-901D-41EAE488F2C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engines", "Engines", "{136BEAED-6001-47C5-8810-8803EAE8B54B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ux", "Ux", "{BAA4085D-755A-4955-93D5-E1C7BAACC7A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{286D2184-5E89-4397-960A-CA11EC322EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{286D2184-5E89-4397-960A-CA11EC322EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{286D2184-5E89-4397-960A-CA11EC322EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE31BC3-1F43-48D7-901D-41EAE488F2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE31BC3-1F43-48D7-901D-41EAE488F2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE31BC3-1F43-48D7-901D-41EAE488F2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE31BC3-1F43-48D7-901D-41EAE488F2C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{286D2184-5E89-4397-960A-CA11EC322EFF} = {BAA4085D-755A-4955-93D5-E1C7BAACC7A2}
+		{5CE31BC3-1F43-48D7-901D-41EAE488F2C2} = {136BEAED-6001-47C5-8810-8803EAE8B54B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {112CC4BB-2892-4F30-B915-A1778BF86DD6}
